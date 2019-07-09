@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import Listing from './Employee/Listing/Listing';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  
+  state = [
+    {"name": "Mohamed", "age": "27"},
+]
+  render() {
+    return (
+      <div className="App">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+           <a className="navbar-brand" href="#">Employee Dashboard</a>
+        </nav>
+        <button className = "btn-primary btn">Add Employee</button>
+        <Listing name={this.state[0].name} age={this.state[0].age}></Listing>
+      </div>  
+    );
+  }
 }
 
 export default App;
