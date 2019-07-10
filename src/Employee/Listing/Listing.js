@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import App from '../../App';
-import './Listing.css'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import './Listing.css';
 
 class Listing extends Component {
     constructor(props){
@@ -29,9 +27,9 @@ class Listing extends Component {
                     error,
                     isLoaded: true,
                 });
+                console.log(this.state.employees);
             }
             )
-        console.log(this.state.employees);
             
         }
         
@@ -44,6 +42,7 @@ class Listing extends Component {
         } else {
             return (
                 <div>
+                    <Link to={'/create'}><button className = "btn-primary btn">Add Employee</button></Link>
                     <table className="table">
                         <thead>
                             <tr>
@@ -60,8 +59,8 @@ class Listing extends Component {
                             <td>{item.employee_name}</td>
                             <td>{item.employee_age}</td>
                             <td >
-                                <a href="#"><i class="fa fa-edit"></i></a> 
-                                <a href="#"><i class="fa fa-trash"></i></a> 
+                                <a href="#"><i className="fa fa-edit"></i></a> 
+                                <a href="#"><i className="fa fa-trash"></i></a> 
                             </td>
                             </tr>
                             ))}
