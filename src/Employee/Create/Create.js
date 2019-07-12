@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import '../../App';
 import './Create.css';
@@ -11,80 +12,78 @@ class Create extends Component {
         
         super(props);
 
-        this.onChangeEmployeeName = this.onChangeEmployeeName.bind(this);
-        this.onChangeEmployeeSalary = this.onChangeEmployeeSalary.bind(this);
-        this.onChangeEmployeeAge = this.onChangeEmployeeAge.bind(this);
+        this.onChangeTitleName = this.onChangeTitleName.bind(this);
+        this.onChangeTitleBody = this.onChangeTitleBody.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-    
+        
+        
         this.state = {
-          employee_name: '',
-          employee_salary: '',
-          employee_age:''
+          title: '',
+          body: ''
         }
       }
-      onChangeEmployeeName(e) {
+      onChangeTitleName(e) {
         this.setState({
-          employee_name: e.target.value
+          title: e.target.value
         });
       }
-      onChangeEmployeeSalary(e) {
+      onChangeTitleBody(e) {
         this.setState({
-          employee_salary: e.target.value
+          body: e.target.value
         })  
-
-      }
-      onChangeEmployeeAge(e) {
-        this.setState({
-          employee_age: e.target.value
-        })
       }
     
     onSubmit(e) {
+        const {title, body} = this.state;
         e.preventDefault();
         
         const obj = {
-          employee_name: this.state.employee_name,
-          employee_salary: this.state.employee_salary,
-          employee_age: this.state.employee_age
+          title,
+          body
         };
         
-        axios.post('http://dummy.restapiexample.com/api/v1/create', obj)
-            .then(res => console.log(res.data));
-
+        axios.post('https://jsonplaceholder.typicode.com/posts', obj)
+            .then(res => console.log(res.data))
+            .catch(error => console.log(error));
+            
             console.log(obj);
               
-              this.setState({
-                employee_name: '',
-                employee_salary: '',
-                employee_age: ''
-              })
+            //   this.setState({
+            //     title: '',
+            //     body: ''
+            //   })
+
+              this.props.history.push('/');
               console.log(this.state);
     }
         
-
-
     render(){
         
         return(
            <div className="form">
                 <form onSubmit={this.onSubmit.bind(this)}>
                     <div className="form-group">
-                        <label htmlFor="employee_name">Name</label>
-                        <input type="text" onChange={this.onChangeEmployeeName} className="form-control" id="employee_name"/>
+                        <label htmlFor="title">Title</label>
+                        <input type="text" onChange={this.onChangeTitleName} className="form-control" id="title"/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="employee_salary">Salary</label>
-                        <input type="text" onChange={this.onChangeEmployeeSalary} className="form-control" id="employee_salary"/>
+                        <label htmlFor="body">Body</label>
+                        <input type="text" onChange={this.onChangeTitleBody} className="form-control" id="body"/>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="employee_age">Age</label>
-                        <input type="text" onChange={this.onChangeEmployeeAge} className="form-control" id="employee_age"/>
-                    </div>
-                
                     <button type="submit" className="btn btn-primary">Add</button>
                 </form>
            </div>
         );
     }
 }   
-export default Create;
+
+export default withRouter(Create);
+
+
+// axios.post("/api/user/signup", { data })
+//   .then(res => {
+//     if (res.status === 200) {
+//       console.log("REDIRECTION avec status => ", res.status);
+//       // how to redirect here
+//       <Redirect to = {{ pathname: "/home" }} />
+//     }

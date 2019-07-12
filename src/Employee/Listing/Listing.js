@@ -7,19 +7,19 @@ class Listing extends Component {
     constructor(props){
         super(props);
         this.state = {
-            error: null,
+            error: null,        
             isLoaded: false,
-            employees: []};
+            posts: []};
         }
         
     componentDidMount() {
-        fetch("http://dummy.restapiexample.com/api/v1/employees")
+        fetch("https://jsonplaceholder.typicode.com/posts")
         .then(res => res.json())
         .then(
             (result) => {
                 this.setState({
                     isLoaded: true,
-                    employees: result
+                    posts: result
                 });
             },
             (error) => {
@@ -27,14 +27,14 @@ class Listing extends Component {
                     error,
                     isLoaded: true,
                 });
-                console.log(this.state.employees);
+                console.log(this.state.posts);
             }
             )
             
         }
         
     render() {
-        const { error, isLoaded, employees } = this.state;
+        const { error, isLoaded, posts } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -42,22 +42,22 @@ class Listing extends Component {
         } else {
             return (
                 <div>
-                    <Link to={'/create'}><button className = "btn-primary btn">Add Employee</button></Link>
+                    <Link to={'/create'}><button className = "btn-primary btn">Add Post</button></Link>
                     <table className="table">
                         <thead>
                             <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">age</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Body</th>
                             <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {employees.map(item => (
+                            {posts.map(item => (
                             <tr key = {item.id}>
                             <th>{item.id}</th>
-                            <td>{item.employee_name}</td>
-                            <td>{item.employee_age}</td>
+                            <td>{item.title}</td>
+                            <td>{item.body}</td>
                             <td >
                                 <a href="#"><i className="fa fa-edit"></i></a> 
                                 <a href="#"><i className="fa fa-trash"></i></a> 
