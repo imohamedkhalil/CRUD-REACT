@@ -10,7 +10,7 @@ class App extends Component {
     return (
         <div className="App">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <Link to="/"><a className="navbar-brand" href="#">Employee Dashboard</a></Link>
+            <Link to="/"><a className="navbar-brand" href="#">Posts Dashboard</a></Link>
           </nav>
          <Switch>
             <Route path="/" exact component={Listing}/>

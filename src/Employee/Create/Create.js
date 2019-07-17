@@ -3,7 +3,6 @@ import axios from 'axios';
 import { withRouter } from 'react-router';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import '../../App';
-import './Create.css';
 
 
 class Create extends Component {
@@ -18,6 +17,7 @@ class Create extends Component {
         
         
         this.state = {
+          //id: '',
           title: '',
           body: ''
         }
@@ -38,6 +38,7 @@ class Create extends Component {
         e.preventDefault();
         
         const obj = {
+          //id,
           title,
           body
         };
@@ -46,15 +47,29 @@ class Create extends Component {
             .then(res => console.log(res.data))
             .catch(error => console.log(error));
             
+            
             console.log(obj);
-              
-            //   this.setState({
-            //     title: '',
-            //     body: ''
-            //   })
+              this.setState({
+                title: '',
+                body: ''
+              })
 
-              this.props.history.push('/');
+              this.props.history.push({
+                pathname: '/',
+                state: {addedObject: obj} 
+              })
+              //this.props.history.push('/');
               console.log(this.state);
+
+        // axios.post("https://jsonplaceholder.typicode.com/posts", obj )
+        // .then(res => {
+        //     if (res.status === 200) {
+        //     console.log("REDIRECTION avec status => ", res.status);
+        //     // how to redirect here
+        //     <Redirect to = {{ pathname: "/" }} />
+        //     }
+        // })
+        // .catch(error => console.log(error));
     }
         
     render(){
@@ -64,11 +79,11 @@ class Create extends Component {
                 <form onSubmit={this.onSubmit.bind(this)}>
                     <div className="form-group">
                         <label htmlFor="title">Title</label>
-                        <input type="text" onChange={this.onChangeTitleName} className="form-control" id="title"/>
+                        <input type="text" name="title" onChange={this.onChangeTitleName} className="form-control" id="title"/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="body">Body</label>
-                        <input type="text" onChange={this.onChangeTitleBody} className="form-control" id="body"/>
+                        <input type="text" name="body" onChange={this.onChangeTitleBody} className="form-control" id="body"/>
                     </div>
                     <button type="submit" className="btn btn-primary">Add</button>
                 </form>
@@ -77,13 +92,6 @@ class Create extends Component {
     }
 }   
 
-export default withRouter(Create);
+export default withRouter(Create); //haga gayaly mn react router dom btwaffarly prop esmha history.. mn 3'eer with router de ana ma3andesh 7aga esmha history
 
 
-// axios.post("/api/user/signup", { data })
-//   .then(res => {
-//     if (res.status === 200) {
-//       console.log("REDIRECTION avec status => ", res.status);
-//       // how to redirect here
-//       <Redirect to = {{ pathname: "/home" }} />
-//     }
