@@ -40,7 +40,6 @@ class Listing extends Component {
         
         toggleModal = () => {
             const {isModalVisible} = this.state; 
-            console.log('inside toggle', isModalVisible);
             this.setState({isModalVisible: !isModalVisible});
         }
 
