@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import './Listing.css';
-import Add from '../Add/Add';
+import AddUpdatePost from '../AddUpdate/AddUpdate';
 
 class Listing extends Component {
     constructor(props){
@@ -38,20 +38,38 @@ class Listing extends Component {
             console.log("here");
         }
         
-        toggleModal = () => {
+        toggleModal = (id) => {
             const {isModalVisible} = this.state; 
-            this.setState({isModalVisible: !isModalVisible});
+            this.setState({
+                isModalVisible: !isModalVisible,
+                itemToEditId: id
+            });
         }
 
-        handleFormSubmit = (obj) => {
+        handleFormSubmit = (post) => {
             const { posts } = this.state;
-            const currentCount = posts.length;
-            const identifiedObj = {...obj, id: currentCount + 1}
+            if(post.id) {
+                const updatedPosts = posts.map((eachPost) => {
+                    if (eachPost.id !== post.id) {
+                        return eachPost
+                    } else {
+                        return { ...eachPost, ...post };
+                        
+                    }
+                  });
+                this.setState({ posts: updatedPosts, isModalVisible: false})
+
+            }
+            else {
+            const lastPostId = posts[posts.length - 1].id;
+            const identifiedPost = {...post, id: lastPostId + 1}
             // axios.post('https://jsonplaceholder.typicode.com/posts', obj)
             // .then(res => console.log(res.data))
             // .catch(error => console.log(error));
-            const updatedPosts = [...posts, identifiedObj];
-            this.setState({ posts: updatedPosts})
+            const updatedPosts = [...posts, identifiedPost];
+            this.setState({ posts: updatedPosts, isModalVisible: false})
+            }
+           
         } 
 
         handleDelete = (id) => {
@@ -60,8 +78,7 @@ class Listing extends Component {
             this.setState({posts: filteredPosts});
         }
     render() {
-        const { error, isLoaded, posts, isModalVisible, } = this.state;
-        console.log('isVisible inside render', isModalVisible);
+        const { error, isLoaded, posts, isModalVisible, itemToEditId } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -71,12 +88,13 @@ class Listing extends Component {
                 <>
                 <div>
                     <button onClick = {this.toggleModal} className = "add-post-btn btn-primary btn">Add Post</button>
-                    <Add 
+                    {isModalVisible ? <AddUpdatePost
                         show={isModalVisible}
                         toggle={this.toggleModal}
                         posts={posts}
                         handleFormSubmit={this.handleFormSubmit}
-                    />
+                        itemToEditId={itemToEditId}
+                    />: null}
                     <table className="table">
                         <thead>
                             <tr>
@@ -93,7 +111,7 @@ class Listing extends Component {
                             <td>{item.title}</td>
                             <td>{item.body}</td>
                             <td >
-                                <a href="#"><i className="fa fa-edit"></i></a>
+                                <a href="#" onClick= {() => {this.toggleModal(item.id)}}><i className="fa fa-edit"></i></a>
                                 <a href="#" onClick={() => this.handleDelete(item.id)}><i className="fa fa-trash"></i></a>
                             </td>
                             </tr>
